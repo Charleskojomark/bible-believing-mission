@@ -42,16 +42,16 @@ export const WelcomeSection = () => {
                 <div className="relative min-h-[500px]">
                     <div className="relative rounded-2xl overflow-hidden shadow-2xl h-[500px] w-[85%] ml-auto z-10">
                         <Image
-                            src="/worship2.jpg"
-                            alt="Church Worship Service"
+                            src="/talknado1.jpeg"
+                            alt="Apostle Kingsley Innocent Aguleke"
                             fill
                             className="object-cover"
                         />
                     </div>
                     <div className="absolute bottom-10 left-0 w-3/5 rounded-2xl overflow-hidden shadow-xl aspect-square z-20 border-8 border-white">
                         <Image
-                            src="https://images.pexels.com/photos/2351719/pexels-photo-2351719.jpeg?auto=compress&cs=tinysrgb&w=800"
-                            alt="Worshippers with Hands Raised"
+                            src="/talknado2.jpeg"
+                            alt="Apostle Kingsley Preaching"
                             fill
                             className="object-cover"
                         />

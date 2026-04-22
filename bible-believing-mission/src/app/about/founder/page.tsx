@@ -21,7 +21,7 @@ export default function FounderPage() {
                     <div className="md:col-span-5 relative rounded-2xl overflow-hidden shadow-2xl aspect-[3/4]">
                         {/* Using a placeholder portrait image as we don't have the real one */}
                         <Image
-                            src="https://images.pexels.com/photos/4427821/pexels-photo-4427821.jpeg?auto=compress&cs=tinysrgb&w=800"
+                            src="/random.jpeg"
                             alt="Apostle Kingsley Innocent Aguleke"
                             fill
                             className="object-cover"
@@ -56,6 +56,25 @@ export default function FounderPage() {
                                     &quot;Preaching the word with one microphone.&quot;
                                 </p>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Additional Founder Gallery */}
+                <div className="mt-24">
+                    <div className="mb-10 text-center">
+                        <h3 className="font-heading text-3xl font-bold text-dark mb-4">Ministry In Action</h3>
+                        <div className="w-16 h-1 bg-gold mx-auto"></div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="relative aspect-square rounded-2xl overflow-hidden shadow-lg">
+                            <Image src="/random1.jpeg" alt="Apostle Kingsley Ministry" fill className="object-cover hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <div className="relative aspect-square rounded-2xl overflow-hidden shadow-lg">
+                            <Image src="/random2.jpeg" alt="Apostle Kingsley Ministry" fill className="object-cover hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <div className="relative aspect-square rounded-2xl overflow-hidden shadow-lg">
+                            <Image src="/random3.jpeg" alt="Apostle Kingsley Ministry" fill className="object-cover hover:scale-105 transition-transform duration-500" />
                         </div>
                     </div>
                 </div>

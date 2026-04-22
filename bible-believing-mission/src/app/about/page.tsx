@@ -40,7 +40,7 @@ export default function AboutPage() {
 
                     <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3]">
                         <Image
-                            src="https://images.pexels.com/photos/4427821/pexels-photo-4427821.jpeg?auto=compress&cs=tinysrgb&w=1260"
+                            src="/aboutus.jpeg"
                             alt="Church Congregation"
                             fill
                             className="object-cover"
