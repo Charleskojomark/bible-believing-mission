@@ -5,7 +5,7 @@ import { schema } from './schema'
 
 export default defineConfig({
     basePath: '/',
-    projectId: process.env.SANITY_STUDIO_PROJECT_ID || 'your_project_id_here',
+    projectId: process.env.SANITY_STUDIO_PROJECT_ID || 'p263nqf3',
     dataset: process.env.SANITY_STUDIO_DATASET || 'production',
     schema,
     plugins: [
