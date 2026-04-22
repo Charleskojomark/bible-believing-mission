@@ -39,7 +39,7 @@ export const HeroSection = () => {
                      * Stock fallback — royalty-free Pexels worship video
                      */}
                     <source
-                        src="https://videos.pexels.com/video-files/3573882/3573882-hd_1920_1080_25fps.mp4"
+                        src="https://res.cloudinary.com/dtopla0ls/video/upload/v1776870945/Screencast_from_2026-04-22_15-52-27_online-video-cutter.com_qc9qo7.mp4"
                         type="video/mp4"
                     />
                     {/* Static image used if video doesn't load at all */}
