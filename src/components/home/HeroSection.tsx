@@ -1,54 +1,57 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "../ui/Button";
 
-// YouTube Video ID from the user's link
-const YT_VIDEO_ID = "0R0uChHI-1s";
-// Start time in seconds (t=2258 from the link)
-const YT_START = 2258;
-// Loop: replay the same video — YouTube needs playlist=VIDEO_ID for loop to work
-const YT_END = YT_START + 60; // 1 minute
-
 export const HeroSection = () => {
-    const [videoReady, setVideoReady] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
 
-    const ytSrc = `https://www.youtube.com/embed/${YT_VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${YT_VIDEO_ID}&controls=0&disablekb=1&fs=0&rel=0&showinfo=0&iv_load_policy=3&modestbranding=1&start=${YT_START}&end=${YT_END}&playsinline=1&enablejsapi=0`;
+    useEffect(() => {
+        // Force play on mount — required on some mobile browsers
+        if (videoRef.current) {
+            videoRef.current.play().catch(() => {
+                // Autoplay blocked — fallback to poster image (handled by CSS)
+            });
+        }
+    }, []);
 
     return (
         <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
-            {/* ── YouTube background iframe ── */}
+            {/* ── HTML5 Video Background ── */}
             <div className="absolute inset-0 z-0 bg-black">
-                {/* Static image shown instantly while video loads */}
-                <div
-                    className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${videoReady ? "opacity-0" : "opacity-100"}`}
-                    style={{ backgroundImage: "url('/worship1.jpg')" }}
-                />
-                {/* YouTube iframe — scaled up to hide UI chrome */}
-                <iframe
-                    src={ytSrc}
-                    title="Background worship video"
-                    allow="autoplay; encrypted-media"
-                    className="absolute pointer-events-none"
-                    onLoad={() => setVideoReady(true)}
-                    style={{
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        width: "calc(100% + 400px)",
-                        height: "calc(100% + 200px)",
-                        minWidth: "177.78vh",
-                        minHeight: "56.25vw",
-                        border: "none",
-                    }}
-                />
-                {/* Dark gradient overlay on top of video */}
-                <div className="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark/65 to-dark z-10" />
+                <video
+                    ref={videoRef}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    poster="/worship1.jpg"
+                    className="absolute inset-0 w-full h-full object-cover"
+                >
+                    {/*
+                     * TO USE YOUR OWN CLIP:
+                     * 1. Download your 1-minute worship clip as MP4
+                     * 2. Save it to /public/hero-video.mp4
+                     * 3. Replace the src below with /hero-video.mp4
+                     *
+                     * Stock fallback — royalty-free Pexels worship video
+                     */}
+                    <source
+                        src="https://videos.pexels.com/video-files/3573882/3573882-hd_1920_1080_25fps.mp4"
+                        type="video/mp4"
+                    />
+                    {/* Static image used if video doesn't load at all */}
+                    Your browser does not support the video tag.
+                </video>
+
+                {/* Dark overlay for text legibility */}
+                <div className="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark/65 to-dark" />
             </div>
 
             {/* ── Hero Content ── */}
-            <div className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
+            <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -66,7 +69,8 @@ export const HeroSection = () => {
                     transition={{ duration: 0.8, delay: 0.4 }}
                     className="text-lg md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto font-light"
                 >
-                    A Christ-centered Church committed to proclaiming the Gospel with power, clarity, and practical impact. Preaching the word with one microphone.
+                    A Christ-centered Church committed to proclaiming the Gospel with power,
+                    clarity, and practical impact. Preaching the word with one microphone.
                 </motion.p>
 
                 <motion.div
@@ -89,7 +93,7 @@ export const HeroSection = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.5, duration: 1 }}
-                className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-20"
+                className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10"
             >
                 <span className="text-white/60 text-sm tracking-widest uppercase">Scroll</span>
                 <motion.div
