@@ -37,8 +37,11 @@ export const AboutPreview = () => {
                     transition={{ duration: 0.6, delay: 0.15 }}
                     className="relative flex items-center justify-center"
                 >
-                    {/* Large circle image */}
-                    <div className="relative w-[320px] h-[320px] md:w-[400px] md:h-[400px] rounded-full overflow-hidden shadow-2xl border-4 border-white">
+                    {/* Large D-shape image — flat left, rounded right */}
+                    <div
+                        className="relative w-[320px] h-[340px] md:w-[410px] md:h-[420px] overflow-hidden shadow-2xl"
+                        style={{ borderRadius: "16px 200px 200px 16px" }}
+                    >
                         <Image
                             src="/aboutus.jpeg"
                             alt="Bible Believing Mission Church"
@@ -46,8 +49,8 @@ export const AboutPreview = () => {
                             className="object-cover"
                         />
                     </div>
-                    {/* Small overlapping circle */}
-                    <div className="absolute bottom-4 left-4 md:left-0 w-[140px] h-[140px] md:w-[170px] md:h-[170px] rounded-full overflow-hidden shadow-xl border-4 border-white z-10">
+                    {/* Small overlapping circle — bottom-left */}
+                    <div className="absolute bottom-0 left-0 w-[140px] h-[140px] md:w-[160px] md:h-[160px] rounded-full overflow-hidden shadow-xl border-4 border-white z-10">
                         <Image
                             src="/talknado1.jpeg"
                             alt="Apostle Kingsley — Talknado"
