@@ -31,7 +31,7 @@ export const Button = ({
     disabled = false,
 }: ButtonProps) => {
     const baseClasses =
-        "inline-flex items-center justify-center font-medium rounded-full transition-all duration-300 gap-2";
+        "inline-flex items-center justify-center font-medium rounded-md transition-all duration-300 gap-2";
 
     const variants = {
         primary:

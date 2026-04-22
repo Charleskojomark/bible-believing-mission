@@ -14,11 +14,10 @@ const services = [
 export const ServiceTimes = () => {
     return (
         <section
-            className="py-24 relative"
+            className="py-16 md:py-24 relative"
             style={{
                 backgroundImage: "url('https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1920')",
                 backgroundSize: "cover",
-                backgroundAttachment: "fixed",
                 backgroundPosition: "center",
             }}
         >
@@ -30,14 +29,14 @@ export const ServiceTimes = () => {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-center mb-16"
+                    className="text-center mb-12"
                 >
                     <p className="text-primary font-bold uppercase tracking-widest text-sm mb-2">Join Us In Worship</p>
-                    <h2 className="font-heading text-4xl md:text-5xl font-bold text-dark mb-4">Service Times</h2>
+                    <h2 className="font-heading text-3xl md:text-5xl font-bold text-dark mb-4">Service Times</h2>
                     <div className="w-12 h-1 bg-primary mx-auto"></div>
                 </motion.div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-0 border border-gray-200 rounded-lg overflow-hidden shadow-lg">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-0 border border-gray-200 rounded-lg overflow-hidden shadow-lg">
                     {services.map((service, i) => (
                         <motion.div
                             key={service.name}
@@ -45,7 +44,7 @@ export const ServiceTimes = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
-                            className="flex flex-col items-center justify-center gap-4 p-8 bg-white border-r border-gray-200 last:border-r-0 hover:bg-primary/5 transition-colors group cursor-pointer"
+                            className="flex flex-col items-center justify-center gap-4 p-6 md:p-8 bg-white border-b border-r border-gray-200 last:border-b-0 hover:bg-primary/5 transition-colors group cursor-pointer"
                         >
                             <div className="group-hover:scale-110 transition-transform duration-300">
                                 {service.icon}
