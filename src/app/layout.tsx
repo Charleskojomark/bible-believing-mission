@@ -14,6 +14,10 @@ export const metadata: Metadata = {
   title: "Bible Believing Mission | Christ-Centered Church",
   description:
     "We exist to raise people who believe God’s Word, live by faith, and walk in the reality of God’s promises.",
+  icons: {
+    icon: "/talknado_logo.jpeg",
+    apple: "/talknado_logo.jpeg",
+  },
 };
 
 export default function RootLayout({

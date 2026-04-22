@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiMenu, HiX } from "react-icons/hi";
@@ -108,7 +109,16 @@ export const Navbar = () => {
                 <div className="flex justify-between items-center">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2 z-50 flex-shrink-0">
-                        <div className="font-heading font-bold text-xl tracking-tight flex flex-col leading-none">
+                        <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-gold shadow-md flex-shrink-0">
+                            <Image
+                                src="/talknado_logo.jpeg"
+                                alt="Talknado Logo"
+                                fill
+                                className="object-cover"
+                                priority
+                            />
+                        </div>
+                        <div className="font-heading font-bold text-[15px] tracking-tight flex flex-col leading-tight">
                             <span className={isLightMode ? "text-primary" : "text-white"}>
                                 Bible Believing
                             </span>
@@ -117,7 +127,7 @@ export const Navbar = () => {
                     </Link>
 
                     {/* Desktop Nav */}
-                    <nav className="hidden xl:flex items-center gap-3 xl:gap-5 flex-wrap justify-center flex-1 mx-4">
+                    <nav className="hidden xl:flex items-center gap-2 xl:gap-3 flex-wrap justify-center flex-1 mx-3">
                         {navLinks.map((link) => (
                             <div
                                 key={link.name}
@@ -127,14 +137,14 @@ export const Navbar = () => {
                             >
                                 <Link
                                     href={link.href || "#"}
-                                    className={`nav-link font-medium flex items-center gap-1 py-2 ${pathname === link.href ? "text-gold" : ""
+                                    className={`nav-link font-medium flex items-center gap-[2px] py-2 text-[13px] xl:text-sm ${pathname === link.href ? "text-gold" : ""
                                         }`}
                                     onClick={(e) => {
                                         if (!link.href) e.preventDefault();
                                     }}
                                 >
                                     {link.name}
-                                    {link.hasPlus && <span className="font-bold text-lg leading-none pt-[2px]">+</span>}
+                                    {link.hasPlus && <span className="font-bold text-base leading-none pt-[2px]">+</span>}
                                 </Link>
 
                                 {/* Dropdown Menu */}
