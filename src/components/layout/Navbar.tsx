@@ -201,18 +201,47 @@ export const Navbar = () => {
                 </div>
             </div>
 
-            {/* Mobile Menu */}
+            {/* Mobile Backdrop */}
             <AnimatePresence>
                 {mobileMenuOpen && (
                     <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "100vh" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="fixed inset-0 bg-white z-40 lg:hidden overflow-y-auto pt-20"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="fixed inset-0 bg-black/40 z-30 lg:hidden"
+                    />
+                )}
+            </AnimatePresence>
+
+            {/* Mobile Drawer — slides in from right, below the fixed header */}
+            <AnimatePresence>
+                {mobileMenuOpen && (
+                    <motion.div
+                        initial={{ x: "100%" }}
+                        animate={{ x: 0 }}
+                        exit={{ x: "100%" }}
+                        transition={{ type: "tween", duration: 0.28 }}
+                        className="fixed right-0 top-0 h-full w-[82vw] max-w-sm bg-white z-40 lg:hidden flex flex-col shadow-2xl overflow-y-auto"
                     >
-                        {/* Mobile contact bar */}
-                        <div className="bg-primary text-white text-xs px-6 py-3 flex flex-col gap-1">
+                        {/* Drawer header with logo */}
+                        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-white sticky top-0 z-10">
+                            <Link href="/" className="flex items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
+                                <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-gold flex-shrink-0">
+                                    <Image src="/talknado_logo.jpeg" alt="Logo" fill className="object-cover" />
+                                </div>
+                                <div className="font-heading font-bold leading-tight">
+                                    <span className="block text-primary text-sm">Bible Believing</span>
+                                    <span className="block text-gold text-sm">Mission</span>
+                                </div>
+                            </Link>
+                            <button onClick={() => setMobileMenuOpen(false)} className="text-2xl text-gray-500 p-1">
+                                <HiX />
+                            </button>
+                        </div>
+
+                        {/* Contact strip */}
+                        <div className="bg-primary text-white text-xs px-5 py-2.5 flex flex-col gap-1">
                             <a href="mailto:talknadoofficial@gmail.com" className="flex items-center gap-2">
                                 <FaEnvelope className="text-gold" /> talknadoofficial@gmail.com
                             </a>
@@ -221,19 +250,20 @@ export const Navbar = () => {
                             </a>
                         </div>
 
-                        <div className="px-6 py-6 flex flex-col gap-1">
+                        {/* Nav links */}
+                        <div className="flex-1 px-5 py-4 flex flex-col gap-0">
                             {navLinks.map((link) => (
                                 <div key={link.name} className="flex flex-col border-b border-gray-100">
                                     {link.subLinks ? (
                                         <>
                                             <button
                                                 onClick={() => toggleDropdown(link.name)}
-                                                className="flex justify-between items-center text-base font-semibold text-dark py-3"
+                                                className="flex justify-between items-center text-sm font-semibold text-dark py-3"
                                             >
                                                 {link.name}
                                                 <motion.span
                                                     animate={{ rotate: activeDropdown === link.name ? 135 : 0 }}
-                                                    className="font-bold text-2xl text-primary leading-none"
+                                                    className="font-bold text-xl text-primary leading-none"
                                                 >
                                                     +
                                                 </motion.span>
@@ -244,16 +274,16 @@ export const Navbar = () => {
                                                         initial={{ height: 0, opacity: 0 }}
                                                         animate={{ height: "auto", opacity: 1 }}
                                                         exit={{ height: 0, opacity: 0 }}
-                                                        className="flex flex-col gap-1 pb-3 pl-4 overflow-hidden"
+                                                        className="flex flex-col gap-0.5 pb-3 pl-3 overflow-hidden"
                                                     >
                                                         {link.subLinks.map((sub) => (
                                                             <Link
                                                                 key={sub.name}
                                                                 href={sub.href}
-                                                                className="text-gray-600 text-sm py-1.5"
+                                                                className="text-gray-500 text-sm py-1.5 hover:text-primary transition-colors"
                                                                 onClick={() => setMobileMenuOpen(false)}
                                                             >
-                                                                {sub.name}
+                                                                — {sub.name}
                                                             </Link>
                                                         ))}
                                                     </motion.div>
@@ -263,7 +293,7 @@ export const Navbar = () => {
                                     ) : (
                                         <Link
                                             href={link.href}
-                                            className="text-base font-semibold text-dark py-3"
+                                            className="text-sm font-semibold text-dark py-3 hover:text-primary transition-colors"
                                             onClick={() => setMobileMenuOpen(false)}
                                         >
                                             {link.name}
@@ -271,11 +301,13 @@ export const Navbar = () => {
                                     )}
                                 </div>
                             ))}
+                        </div>
 
+                        <div className="px-5 pb-6">
                             <Link
                                 href="/live"
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="mt-4 bg-primary text-white text-center font-bold py-3 px-6 rounded-md uppercase tracking-wide"
+                                className="block bg-primary text-white text-center font-bold py-3 px-6 rounded-md uppercase tracking-wide text-sm"
                             >
                                 TALKNADO TV LIVE
                             </Link>
