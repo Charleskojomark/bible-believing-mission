@@ -88,7 +88,7 @@ export const HeroSection = () => {
                                 <div
                                     className="text-white drop-shadow-2xl leading-none select-none"
                                     style={{
-                                        fontFamily: "'Dancing Script', cursive",
+                                        fontFamily: "var(--font-cursive)",
                                         fontWeight: 700,
                                         fontSize: "clamp(4rem, 12vw, 9rem)",
                                         lineHeight: 1.1,

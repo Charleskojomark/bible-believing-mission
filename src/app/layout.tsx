@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Nunito } from "next/font/google";
+import { Nunito, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -8,6 +8,13 @@ const nunito = Nunito({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800", "900"],
   variable: "--font-nunito",
+  display: "swap",
+});
+
+const dancingScript = Dancing_Script({
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: "--font-cursive",
   display: "swap",
 });
 
@@ -29,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="overflow-x-hidden">
       <body
-        className={`${nunito.variable} font-sans antialiased flex flex-col min-h-screen overflow-x-hidden`}
+        className={`${nunito.variable} ${dancingScript.variable} font-sans antialiased flex flex-col min-h-screen overflow-x-hidden`}
       >
         <Navbar />
         {/*

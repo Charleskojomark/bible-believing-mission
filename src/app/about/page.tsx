@@ -4,7 +4,7 @@ import { SectionWrapper } from "@/components/ui/SectionWrapper";
 
 export default function AboutPage() {
     return (
-        <main className="pt-24 min-h-screen">
+        <main className="min-h-screen">
             {/* Page Header */}
             <div className="bg-dark text-white py-20 relative overflow-hidden">
                 <div className="absolute inset-0 bg-primary/20 mix-blend-multiply z-0"></div>
@@ -40,7 +40,7 @@ export default function AboutPage() {
 
                     <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3]">
                         <Image
-                            src="/aboutus.jpeg"
+                            src="/random2.jpeg"
                             alt="Church Congregation"
                             fill
                             className="object-cover"
