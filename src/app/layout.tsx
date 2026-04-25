@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Nunito } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const playfair = Playfair_Display({
+const nunito = Nunito({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-nunito",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -26,12 +27,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="overflow-x-hidden">
       <body
-        className={`${inter.variable} ${playfair.variable} font-sans antialiased flex flex-col min-h-screen`}
+        className={`${nunito.variable} font-sans antialiased flex flex-col min-h-screen overflow-x-hidden`}
       >
         <Navbar />
-        <main className="flex-grow">{children}</main>
+        {/*
+          pt-16 = mobile navbar height (64px, only one row shows)
+          lg:pt-24 = desktop navbar height (64px nav + ~32px top info bar = 96px)
+          The hero section on the homepage uses -mt-16 lg:-mt-24 to cancel this and go full screen.
+          All other pages benefit from this padding so content starts below the navbar.
+        */}
+        <main className="flex-grow pt-16 lg:pt-24">{children}</main>
         <Footer />
       </body>
     </html>

@@ -50,8 +50,13 @@ export const HeroSection = () => {
     };
 
     return (
-        /* Full viewport height — navbar is fixed so it floats above this */
-        <section className="relative w-full overflow-hidden" style={{ height: "100vh" }}>
+        /* -mt-16 cancels the main pt-16 on mobile so hero goes full viewport */
+        /* -mt-24 on lg cancels the lg:pt-24 for the double-row desktop navbar  */
+        /* 100dvh = dynamic viewport height — fixes mobile browser chrome overflow */
+        <section
+            className="relative w-full overflow-hidden -mt-16 lg:-mt-24"
+            style={{ height: "100dvh" }}
+        >
             <AnimatePresence initial={false} custom={direction} mode="sync">
                 <motion.div
                     key={current}
@@ -146,8 +151,8 @@ export const HeroSection = () => {
                         onClick={() => goTo(i)}
                         aria-label={slide.thumbLabel}
                         className={`relative rounded-full overflow-hidden flex-shrink-0 transition-all duration-300 w-9 h-9 md:w-14 md:h-14 ${i === current
-                                ? "ring-[3px] md:ring-4 ring-white scale-110"
-                                : "ring-2 ring-white/60 opacity-70 hover:opacity-100 hover:scale-105"
+                            ? "ring-[3px] md:ring-4 ring-white scale-110"
+                            : "ring-2 ring-white/60 opacity-70 hover:opacity-100 hover:scale-105"
                             }`}
                     >
                         {slide.type === "welcome" ? (

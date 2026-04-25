@@ -28,8 +28,8 @@ const config: Config = {
         cream: "#FAF5EB",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "sans-serif"],
-        heading: ["var(--font-playfair)", "serif"],
+        sans: ["var(--font-nunito)", "sans-serif"],
+        heading: ["var(--font-nunito)", "sans-serif"],
       },
       backgroundImage: {
         "hero-pattern":
