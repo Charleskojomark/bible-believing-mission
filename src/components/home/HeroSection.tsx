@@ -14,7 +14,7 @@ type Slide = {
 
 const slides: Slide[] = [
     { type: "image", src: "/flyers/flyer1.jpg", label: "flyer1", thumbLabel: "Program 1" },
-    { type: "image", src: "/flyers/flyer2.jpg", label: "flyer2", thumbLabel: "Program 2" },
+    { type: "image", src: "/flyers/flyer4.jpg", label: "flyer4", thumbLabel: "Program 2" },
     { type: "image", src: "/flyers/flyer3.jpg", label: "flyer3", thumbLabel: "Program 3" },
     { type: "welcome", src: "/worship1.jpg", label: "welcome", thumbLabel: "Welcome Home" },
 ];
@@ -147,8 +147,8 @@ export const HeroSection = () => {
                         onClick={() => goTo(i)}
                         aria-label={slide.thumbLabel}
                         className={`relative rounded-full overflow-hidden flex-shrink-0 transition-all duration-300 w-9 h-9 md:w-14 md:h-14 ${i === current
-                                ? "ring-[3px] md:ring-4 ring-white scale-110"
-                                : "ring-2 ring-white/60 opacity-70 hover:opacity-100 hover:scale-105"
+                            ? "ring-[3px] md:ring-4 ring-white scale-110"
+                            : "ring-2 ring-white/60 opacity-70 hover:opacity-100 hover:scale-105"
                             }`}
                     >
                         {slide.type === "welcome" ? (
