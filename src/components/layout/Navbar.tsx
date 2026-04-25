@@ -110,9 +110,9 @@ export const Navbar = () => {
                         <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-primary shadow-md flex-shrink-0">
                             <Image src="/talknado_logo.jpeg" alt="Talknado Logo" fill className="object-cover" priority />
                         </div>
-                        <div className="font-heading font-bold leading-tight hidden sm:block">
-                            <span className="block text-primary text-sm">Bible Believing</span>
-                            <span className="block text-primary text-sm">Mission</span>
+                        <div className="font-heading font-bold leading-tight">
+                            <span className="block text-primary text-[11px] sm:text-sm">Bible Believing</span>
+                            <span className="block text-primary text-[11px] sm:text-sm">Mission</span>
                         </div>
                     </Link>
 
@@ -128,8 +128,8 @@ export const Navbar = () => {
                                 <Link
                                     href={link.href}
                                     className={`flex items-center gap-[2px] px-2.5 xl:px-3 py-2 text-[12.5px] xl:text-[13px] font-semibold transition-colors whitespace-nowrap ${pathname === link.href
-                                            ? "text-primary"
-                                            : "text-gray-800 hover:text-primary"
+                                        ? "text-primary"
+                                        : "text-gray-800 hover:text-primary"
                                         }`}
                                 >
                                     {link.name}

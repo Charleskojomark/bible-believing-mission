@@ -106,12 +106,12 @@ export const HeroSection = () => {
                         </div>
                     ) : (
                         /* ── Flyer Image Slide ── */
-                        <div className="relative w-full h-full">
+                        <div className="relative w-full h-full bg-black">
                             <Image
                                 src={slides[current].src}
                                 alt={slides[current].thumbLabel || "Event flyer"}
                                 fill
-                                className="object-cover object-top"
+                                className="object-contain sm:object-cover sm:object-top"
                                 priority={current === 0}
                             />
                         </div>
@@ -131,23 +131,22 @@ export const HeroSection = () => {
             {/* Right Arrow — leave space for thumbnails */}
             <button
                 onClick={next}
-                className="absolute top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/30 hover:bg-primary text-white flex items-center justify-center transition-all"
-                style={{ right: "80px" }}
+                className="absolute top-1/2 -translate-y-1/2 z-20 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/30 hover:bg-primary text-white flex items-center justify-center transition-all"
+                style={{ right: "50px" }}
                 aria-label="Next slide"
             >
-                <FaChevronRight size={15} />
+                <FaChevronRight size={12} />
             </button>
 
             {/* Right-side Circular Thumbnails */}
-            <div className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-3">
+            <div className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-2 md:gap-3">
                 {slides.map((slide, i) => (
                     <button
                         key={slide.label}
                         onClick={() => goTo(i)}
                         aria-label={slide.thumbLabel}
-                        style={{ width: "56px", height: "56px" }}
-                        className={`relative rounded-full overflow-hidden flex-shrink-0 transition-all duration-300 ${i === current
-                                ? "ring-4 ring-white ring-offset-2 ring-offset-primary scale-110"
+                        className={`relative rounded-full overflow-hidden flex-shrink-0 transition-all duration-300 w-9 h-9 md:w-14 md:h-14 ${i === current
+                                ? "ring-[3px] md:ring-4 ring-white scale-110"
                                 : "ring-2 ring-white/60 opacity-70 hover:opacity-100 hover:scale-105"
                             }`}
                     >
