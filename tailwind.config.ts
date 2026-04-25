@@ -10,9 +10,9 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#C41E3A",
-          dark: "#9B1530",
-          light: "#E5234A",
+          DEFAULT: "#7B2FBE",
+          dark: "#5B1FA0",
+          light: "#9B4FDE",
         },
         gold: {
           DEFAULT: "#C9A84C",
@@ -33,12 +33,13 @@ const config: Config = {
       },
       backgroundImage: {
         "hero-pattern":
-          "linear-gradient(to bottom, rgba(15,15,15,0.72), rgba(15,15,15,0.88))",
+          "linear-gradient(to bottom, rgba(60,10,100,0.75), rgba(60,10,100,0.88))",
       },
       animation: {
         "fade-in": "fadeIn 0.6s ease-out forwards",
         "slide-up": "slideUp 0.6s ease-out forwards",
         "slide-down": "slideDown 0.25s ease-out forwards",
+        "slide-right": "slideRight 0.5s ease-out forwards",
       },
       keyframes: {
         fadeIn: {
@@ -52,6 +53,10 @@ const config: Config = {
         slideDown: {
           from: { opacity: "0", transform: "translateY(-8px)" },
           to: { opacity: "1", transform: "translateY(0)" },
+        },
+        slideRight: {
+          from: { opacity: "0", transform: "translateX(-30px)" },
+          to: { opacity: "1", transform: "translateX(0)" },
         },
       },
     },

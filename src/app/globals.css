@@ -2,7 +2,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Dancing+Script:wght@700&display=swap");
 
 :root {
   --font-inter: "Inter", sans-serif;
@@ -34,11 +34,11 @@ body {
   background: #1a1a1a;
 }
 ::-webkit-scrollbar-thumb {
-  background: #c41e3a;
+  background: #7B2FBE;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #9b1530;
+  background: #5B1FA0;
 }
 
 /* Glass card */
@@ -56,9 +56,9 @@ body {
   background-clip: text;
 }
 
-/* Red gradient text */
-.red-gradient {
-  background: linear-gradient(135deg, #c41e3a, #e5234a);
+/* Purple gradient text */
+.purple-gradient {
+  background: linear-gradient(135deg, #7B2FBE, #9B4FDE);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -67,6 +67,11 @@ body {
 /* Section padding */
 .section-padding {
   padding: 5rem 0;
+}
+
+/* Welcome Home cursive font */
+.font-cursive {
+  font-family: "Dancing Script", cursive;
 }
 
 /* Link underline animation */
@@ -80,7 +85,7 @@ body {
   left: 0;
   width: 0;
   height: 2px;
-  background: #c9a84c;
+  background: #7B2FBE;
   transition: width 0.3s ease;
 }
 .nav-link:hover::after {
