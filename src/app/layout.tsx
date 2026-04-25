@@ -45,7 +45,7 @@ export default function RootLayout({
           The hero section on the homepage uses -mt-16 lg:-mt-24 to cancel this and go full screen.
           All other pages benefit from this padding so content starts below the navbar.
         */}
-        <main className="flex-grow pt-16 lg:pt-24">{children}</main>
+        <main className="flex-grow pt-16 lg:pt-[120px]">{children}</main>
         <Footer />
       </body>
     </html>

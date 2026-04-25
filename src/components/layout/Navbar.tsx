@@ -12,9 +12,7 @@ const navLinks = [
     {
         name: "Home",
         href: "/",
-        subLinks: [
-            { name: "Homepage", href: "/" },
-        ],
+        subLinks: [{ name: "Homepage", href: "/" }],
     },
     {
         name: "About",
@@ -77,114 +75,141 @@ export const Navbar = () => {
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 shadow-md">
-            {/* ── Row 1: Top Info Bar (purple) ── */}
-            <div className="bg-primary text-white py-2 px-4 hidden lg:block">
-                <div className="max-w-screen-xl mx-auto flex justify-between items-center text-xs gap-4">
-                    <div className="flex items-center gap-6">
-                        <a href="mailto:talknadoofficial@gmail.com" className="flex items-center gap-2 hover:text-gold transition-colors">
-                            <FaEnvelope className="text-gold flex-shrink-0" />
-                            talknadoofficial@gmail.com
-                        </a>
-                        <span className="flex items-center gap-2">
-                            <FaMapMarkerAlt className="text-gold flex-shrink-0" />
-                            No 72 Aba/Port Express Way Osisioma, Aba Nigeria
-                        </span>
+
+            {/* ═══════════════════════════════════════════
+                DESKTOP / TABLET LAYOUT (lg and above)
+                Row 1 — Purple bar: Logo left, contact right
+                Row 2 — White bar: Nav links + CTA button
+            ═══════════════════════════════════════════ */}
+            <div className="hidden lg:block">
+
+                {/* ── Row 1: Purple — Logo + Contact Info ── */}
+                <div className="bg-primary text-white">
+                    <div className="max-w-screen-xl mx-auto px-6 flex items-center justify-between h-16">
+
+                        {/* Logo block */}
+                        <Link href="/" className="flex items-center gap-3 flex-shrink-0">
+                            <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-white/40 shadow-md flex-shrink-0">
+                                <Image src="/talknado_logo.jpeg" alt="Talknado Logo" fill className="object-cover" priority />
+                            </div>
+                            <div className="font-heading font-extrabold leading-tight">
+                                <span className="block text-white text-base uppercase tracking-wide">Bible Believing</span>
+                                <span className="block text-white/80 text-xs font-semibold tracking-wider">MISSION · HEADQUARTERS</span>
+                            </div>
+                        </Link>
+
+                        {/* Contact info */}
+                        <div className="flex items-center gap-8 text-sm">
+                            <a href="mailto:talknadoofficial@gmail.com" className="flex items-center gap-2 hover:text-white/80 transition-colors">
+                                <FaEnvelope className="text-white/70 flex-shrink-0" />
+                                talknadoofficial@gmail.com
+                            </a>
+                            <span className="flex items-center gap-2 text-white/90">
+                                <FaMapMarkerAlt className="text-white/70 flex-shrink-0" />
+                                No 72 Aba/Port Express Way, Osisioma, Aba Nigeria
+                            </span>
+                            <a href="tel:09153117991" className="flex items-center gap-2 hover:text-white/80 transition-colors">
+                                <FaPhoneAlt className="text-white/70 flex-shrink-0" />
+                                09153117991
+                            </a>
+                        </div>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <a href="tel:09153117991" className="flex items-center gap-2 hover:text-gold transition-colors">
-                            <FaPhoneAlt className="text-gold flex-shrink-0" />
-                            09153117991
-                        </a>
-                        <span className="text-white/40">|</span>
-                        <a href="tel:09069885520" className="hover:text-gold transition-colors">09069885520</a>
+                </div>
+
+                {/* ── Row 2: White — Nav Links + CTA ── */}
+                <div className="bg-white border-b border-gray-100">
+                    <div className="max-w-screen-xl mx-auto px-6 flex items-center justify-between h-14">
+
+                        {/* Nav Links */}
+                        <nav className="flex items-center gap-0">
+                            {navLinks.map((link) => (
+                                <div
+                                    key={link.name}
+                                    className="relative"
+                                    onMouseEnter={() => link.subLinks && setActiveDropdown(link.name)}
+                                    onMouseLeave={() => link.subLinks && setActiveDropdown(null)}
+                                >
+                                    <Link
+                                        href={link.href}
+                                        className={`flex items-center gap-[2px] px-3 xl:px-4 py-2 text-[14px] xl:text-[15px] font-bold transition-colors whitespace-nowrap ${pathname === link.href
+                                                ? "text-primary"
+                                                : "text-gray-900 hover:text-primary"
+                                            }`}
+                                    >
+                                        {link.name}
+                                        {link.subLinks && (
+                                            <span className="text-primary font-extrabold text-base ml-[1px]">+</span>
+                                        )}
+                                    </Link>
+
+                                    {/* Dropdown */}
+                                    {link.subLinks && (
+                                        <AnimatePresence>
+                                            {activeDropdown === link.name && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 8 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    exit={{ opacity: 0, y: 8 }}
+                                                    transition={{ duration: 0.15 }}
+                                                    className="absolute left-0 top-full pt-1 w-52 z-50"
+                                                >
+                                                    <div className="bg-white rounded-xl shadow-xl overflow-hidden flex flex-col py-2 border border-gray-100">
+                                                        {link.subLinks.map((sub) => (
+                                                            <Link
+                                                                key={sub.name}
+                                                                href={sub.href}
+                                                                className="px-4 py-2.5 text-sm text-gray-700 font-semibold hover:text-primary hover:bg-purple-50 transition-colors"
+                                                                onClick={() => setActiveDropdown(null)}
+                                                            >
+                                                                {sub.name}
+                                                            </Link>
+                                                        ))}
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    )}
+                                </div>
+                            ))}
+                        </nav>
+
+                        {/* TV LIVE Button */}
+                        <Link
+                            href="/live"
+                            className="flex items-center bg-primary text-white text-[13px] font-extrabold px-5 py-2.5 rounded-md hover:bg-primary-dark transition-colors uppercase tracking-wide whitespace-nowrap"
+                        >
+                            TALKNADO TV LIVE
+                        </Link>
                     </div>
                 </div>
             </div>
 
-            {/* ── Row 2: Main Nav (white) ── */}
-            <div className="bg-white border-b border-gray-100">
-                <div className="max-w-screen-xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+            {/* ═══════════════════════════════════════════
+                MOBILE LAYOUT (below lg)
+                Single compact row: Logo + hamburger
+            ═══════════════════════════════════════════ */}
+            <div className="lg:hidden bg-white border-b border-gray-100 shadow-sm">
+                <div className="flex items-center justify-between px-4 h-16">
 
                     {/* Logo */}
-                    <Link href="/" className="flex items-center gap-3 flex-shrink-0">
-                        <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-primary shadow-md flex-shrink-0">
+                    <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
+                        <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-primary shadow-md flex-shrink-0">
                             <Image src="/talknado_logo.jpeg" alt="Talknado Logo" fill className="object-cover" priority />
                         </div>
                         <div className="font-heading font-bold leading-tight">
-                            <span className="block text-primary text-[11px] sm:text-sm">Bible Believing</span>
-                            <span className="block text-primary text-[11px] sm:text-sm">Mission</span>
+                            <span className="block text-primary text-[11px]">Bible Believing</span>
+                            <span className="block text-primary text-[11px]">Mission</span>
                         </div>
                     </Link>
 
-                    {/* Desktop Nav */}
-                    <nav className="hidden lg:flex items-center gap-0">
-                        {navLinks.map((link) => (
-                            <div
-                                key={link.name}
-                                className="relative"
-                                onMouseEnter={() => link.subLinks && setActiveDropdown(link.name)}
-                                onMouseLeave={() => link.subLinks && setActiveDropdown(null)}
-                            >
-                                <Link
-                                    href={link.href}
-                                    className={`flex items-center gap-[2px] px-2.5 xl:px-3 py-2 text-[12.5px] xl:text-[13px] font-semibold transition-colors whitespace-nowrap ${pathname === link.href
-                                        ? "text-primary"
-                                        : "text-gray-800 hover:text-primary"
-                                        }`}
-                                >
-                                    {link.name}
-                                    {link.subLinks && (
-                                        <span className="text-primary font-bold text-sm ml-[1px]">+</span>
-                                    )}
-                                </Link>
-
-                                {/* Dropdown */}
-                                {link.subLinks && (
-                                    <AnimatePresence>
-                                        {activeDropdown === link.name && (
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 8 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                exit={{ opacity: 0, y: 8 }}
-                                                transition={{ duration: 0.15 }}
-                                                className="absolute left-0 top-full pt-1 w-52 z-50"
-                                            >
-                                                <div className="bg-white rounded-xl shadow-xl overflow-hidden flex flex-col py-2 border border-gray-100">
-                                                    {link.subLinks.map((sub) => (
-                                                        <Link
-                                                            key={sub.name}
-                                                            href={sub.href}
-                                                            className="px-4 py-2.5 text-sm text-gray-700 font-medium hover:text-primary hover:bg-purple-50 transition-colors"
-                                                            onClick={() => setActiveDropdown(null)}
-                                                        >
-                                                            {sub.name}
-                                                        </Link>
-                                                    ))}
-                                                </div>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                )}
-                            </div>
-                        ))}
-                    </nav>
-
-                    {/* TV LIVE Button + Mobile Toggle */}
-                    <div className="flex items-center gap-3 flex-shrink-0">
-                        <Link
-                            href="/live"
-                            className="hidden lg:flex items-center gap-2 bg-primary text-white text-xs font-bold px-4 py-2.5 rounded-md hover:bg-primary-dark transition-colors uppercase tracking-wide whitespace-nowrap"
-                        >
-                            TALKNADO TV LIVE
-                        </Link>
-                        <button
-                            className="lg:hidden text-2xl p-2 text-gray-700"
-                            onClick={() => setMobileOpen(!mobileOpen)}
-                            aria-label="Toggle Menu"
-                        >
-                            {mobileOpen ? <HiX /> : <HiMenu />}
-                        </button>
-                    </div>
+                    {/* Hamburger */}
+                    <button
+                        className="text-2xl p-2 text-gray-700"
+                        onClick={() => setMobileOpen(!mobileOpen)}
+                        aria-label="Toggle Menu"
+                    >
+                        {mobileOpen ? <HiX /> : <HiMenu />}
+                    </button>
                 </div>
             </div>
 
@@ -230,10 +255,10 @@ export const Navbar = () => {
                         {/* Contact strip */}
                         <div className="bg-primary text-white text-xs px-5 py-2.5 flex flex-col gap-1">
                             <a href="mailto:talknadoofficial@gmail.com" className="flex items-center gap-2">
-                                <FaEnvelope className="text-gold" /> talknadoofficial@gmail.com
+                                <FaEnvelope className="opacity-70" /> talknadoofficial@gmail.com
                             </a>
                             <a href="tel:09153117991" className="flex items-center gap-2">
-                                <FaPhoneAlt className="text-gold" /> 09153117991 / 09069885520
+                                <FaPhoneAlt className="opacity-70" /> 09153117991 / 09069885520
                             </a>
                         </div>
 
@@ -245,12 +270,12 @@ export const Navbar = () => {
                                         <>
                                             <button
                                                 onClick={() => toggleDropdown(link.name)}
-                                                className="flex justify-between items-center text-sm font-semibold text-gray-800 py-3"
+                                                className="flex justify-between items-center text-sm font-bold text-gray-800 py-3"
                                             >
                                                 {link.name}
                                                 <motion.span
                                                     animate={{ rotate: activeDropdown === link.name ? 135 : 0 }}
-                                                    className="font-bold text-xl text-primary leading-none"
+                                                    className="font-extrabold text-xl text-primary leading-none"
                                                 >
                                                     +
                                                 </motion.span>
@@ -280,7 +305,7 @@ export const Navbar = () => {
                                     ) : (
                                         <Link
                                             href={link.href}
-                                            className="text-sm font-semibold text-gray-800 py-3 hover:text-primary transition-colors"
+                                            className="text-sm font-bold text-gray-800 py-3 hover:text-primary transition-colors"
                                             onClick={() => setMobileOpen(false)}
                                         >
                                             {link.name}
@@ -294,7 +319,7 @@ export const Navbar = () => {
                             <Link
                                 href="/live"
                                 onClick={() => setMobileOpen(false)}
-                                className="block bg-primary text-white text-center font-bold py-3 px-6 rounded-md uppercase tracking-wide text-sm"
+                                className="block bg-primary text-white text-center font-extrabold py-3 px-6 rounded-md uppercase tracking-wide text-sm"
                             >
                                 TALKNADO TV LIVE
                             </Link>
