@@ -38,7 +38,6 @@ export const HeroSection = () => {
         setCurrent((c) => (c - 1 + slides.length) % slides.length);
     }, []);
 
-    // Auto-advance every 6 seconds
     useEffect(() => {
         const id = setInterval(next, 6000);
         return () => clearInterval(id);
@@ -51,8 +50,8 @@ export const HeroSection = () => {
     };
 
     return (
-        <section className="relative w-full overflow-hidden" style={{ height: "70vh", minHeight: "460px", maxHeight: "700px" }}>
-            {/* ── Slides ── */}
+        /* Full viewport height — navbar is fixed so it floats above this */
+        <section className="relative w-full overflow-hidden" style={{ height: "100vh" }}>
             <AnimatePresence initial={false} custom={direction} mode="sync">
                 <motion.div
                     key={current}
@@ -74,19 +73,35 @@ export const HeroSection = () => {
                                 className="object-cover"
                                 priority
                             />
-                            {/* Purple overlay */}
-                            <div className="absolute inset-0 bg-purple-900/70" />
-                            {/* Welcome Home text */}
+                            {/* Vivid electric purple overlay — matches Dunamis exactly */}
+                            <div
+                                className="absolute inset-0"
+                                style={{ background: "rgba(110, 0, 200, 0.80)" }}
+                            />
+                            {/* Welcome Home text — centered in full viewport */}
                             <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4">
-                                <span
-                                    className="font-cursive text-7xl md:text-9xl text-white drop-shadow-2xl leading-tight"
-                                    style={{ fontFamily: "'Dancing Script', cursive", fontWeight: 700 }}
+                                <div
+                                    className="text-white drop-shadow-2xl leading-none select-none"
+                                    style={{
+                                        fontFamily: "'Dancing Script', cursive",
+                                        fontWeight: 700,
+                                        fontSize: "clamp(4rem, 12vw, 9rem)",
+                                        lineHeight: 1.1,
+                                    }}
                                 >
                                     Welcome
-                                </span>
-                                <span className="font-heading text-4xl md:text-6xl font-extrabold text-white tracking-widest uppercase mt-1 drop-shadow-xl">
+                                </div>
+                                <div
+                                    className="font-heading text-white tracking-[0.15em] uppercase drop-shadow-xl select-none"
+                                    style={{
+                                        fontWeight: 900,
+                                        fontSize: "clamp(2rem, 6vw, 5rem)",
+                                        lineHeight: 1,
+                                        marginTop: "0.25rem",
+                                    }}
+                                >
                                     HOME
-                                </span>
+                                </div>
                             </div>
                         </div>
                     ) : (
@@ -104,42 +119,47 @@ export const HeroSection = () => {
                 </motion.div>
             </AnimatePresence>
 
-            {/* ── Left Arrow ── */}
+            {/* Left Arrow */}
             <button
                 onClick={prev}
-                className="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-primary/80 text-white flex items-center justify-center transition-all"
+                className="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/30 hover:bg-primary text-white flex items-center justify-center transition-all"
                 aria-label="Previous slide"
             >
-                <FaChevronLeft size={14} />
+                <FaChevronLeft size={15} />
             </button>
 
-            {/* ── Right Arrow ── */}
+            {/* Right Arrow — leave space for thumbnails */}
             <button
                 onClick={next}
-                className="absolute right-20 md:right-24 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-primary/80 text-white flex items-center justify-center transition-all"
+                className="absolute top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/30 hover:bg-primary text-white flex items-center justify-center transition-all"
+                style={{ right: "80px" }}
                 aria-label="Next slide"
             >
-                <FaChevronRight size={14} />
+                <FaChevronRight size={15} />
             </button>
 
-            {/* ── Right-side Circular Thumbnails ── */}
-            <div className="absolute right-3 md:right-5 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-3">
+            {/* Right-side Circular Thumbnails */}
+            <div className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-3">
                 {slides.map((slide, i) => (
                     <button
                         key={slide.label}
                         onClick={() => goTo(i)}
                         aria-label={slide.thumbLabel}
-                        className={`relative rounded-full overflow-hidden transition-all duration-300 flex-shrink-0 ${i === current
-                                ? "ring-4 ring-white ring-offset-1 ring-offset-primary scale-110"
-                                : "ring-2 ring-white/50 opacity-75 hover:opacity-100 hover:scale-105"
+                        style={{ width: "56px", height: "56px" }}
+                        className={`relative rounded-full overflow-hidden flex-shrink-0 transition-all duration-300 ${i === current
+                                ? "ring-4 ring-white ring-offset-2 ring-offset-primary scale-110"
+                                : "ring-2 ring-white/60 opacity-70 hover:opacity-100 hover:scale-105"
                             }`}
-                        style={{ width: "52px", height: "52px" }}
                     >
                         {slide.type === "welcome" ? (
-                            <div className="w-full h-full bg-purple-700 flex items-center justify-center relative">
-                                <Image src="/worship1.jpg" alt="Welcome" fill className="object-cover opacity-60" />
-                                <span className="relative z-10 text-[8px] text-white font-bold text-center leading-tight px-0.5">
-                                    Welcome
+                            <div className="w-full h-full relative">
+                                <Image src="/worship1.jpg" alt="Welcome" fill className="object-cover" />
+                                <div className="absolute inset-0" style={{ background: "rgba(110,0,200,0.75)" }} />
+                                <span
+                                    className="absolute inset-0 flex items-center justify-center text-[9px] text-white font-bold text-center leading-tight px-1"
+                                    style={{ fontFamily: "'Dancing Script', cursive" }}
+                                >
+                                    Welcome Home
                                 </span>
                             </div>
                         ) : (
@@ -154,7 +174,7 @@ export const HeroSection = () => {
                 ))}
             </div>
 
-            {/* ── Bottom dot indicators (mobile friendly) ── */}
+            {/* Mobile dot indicators */}
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2 lg:hidden">
                 {slides.map((_, i) => (
                     <button

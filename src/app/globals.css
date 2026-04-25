@@ -30,15 +30,18 @@ body {
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: #1a1a1a;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #7B2FBE;
+  background: #5B21B6;
   border-radius: 3px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #5B1FA0;
+  background: #4C1D95;
 }
 
 /* Glass card */
@@ -58,7 +61,7 @@ body {
 
 /* Purple gradient text */
 .purple-gradient {
-  background: linear-gradient(135deg, #7B2FBE, #9B4FDE);
+  background: linear-gradient(135deg, #5B21B6, #7C3AED);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -78,6 +81,7 @@ body {
 .nav-link {
   position: relative;
 }
+
 .nav-link::after {
   content: "";
   position: absolute;
@@ -88,6 +92,7 @@ body {
   background: #7B2FBE;
   transition: width 0.3s ease;
 }
+
 .nav-link:hover::after {
   width: 100%;
 }
