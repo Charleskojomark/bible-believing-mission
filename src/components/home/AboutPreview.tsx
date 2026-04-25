@@ -16,7 +16,7 @@ export const AboutPreview = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    className="order-2 lg:order-1"
+                    className="order-1 lg:order-1"
                 >
                     <p className="text-primary font-bold uppercase tracking-widest text-sm mb-2">Who We Are</p>
                     <h2 className="font-heading text-4xl md:text-5xl font-bold text-dark mb-4 leading-tight">About Us</h2>
@@ -39,7 +39,7 @@ export const AboutPreview = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.15 }}
-                    className="relative order-1 lg:order-2 flex justify-center"
+                    className="relative order-2 lg:order-2 flex justify-center"
                     style={{ height: "480px" }}
                 >
                     {/* Main large image — top-right, slight tilt */}
