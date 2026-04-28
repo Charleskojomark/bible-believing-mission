@@ -1,0 +1,46 @@
+import { createClient } from "@libsql/client";
+
+const db = createClient({
+    url: process.env.TURSO_DATABASE_URL!,
+    authToken: process.env.TURSO_AUTH_TOKEN!,
+});
+
+export async function initDb() {
+    await db.executeMultiple(`
+    CREATE TABLE IF NOT EXISTS media (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      type TEXT NOT NULL CHECK(type IN ('image','audio','video','document')),
+      url TEXT NOT NULL,
+      r2_key TEXT NOT NULL,
+      size INTEGER DEFAULT 0,
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS sermons (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      preacher TEXT NOT NULL,
+      date TEXT NOT NULL,
+      audio_url TEXT,
+      audio_key TEXT,
+      thumbnail_url TEXT,
+      thumbnail_key TEXT,
+      description TEXT,
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS events (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      date TEXT NOT NULL,
+      location TEXT,
+      flyer_url TEXT,
+      flyer_key TEXT,
+      description TEXT,
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+  `);
+}
+
+export default db;
