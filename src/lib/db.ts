@@ -1,12 +1,12 @@
 import { createClient } from "@libsql/client";
 
 const db = createClient({
-    url: process.env.TURSO_DATABASE_URL!,
-    authToken: process.env.TURSO_AUTH_TOKEN!,
+  url: process.env.TURSO_DATABASE_URL || "libsql://dummy-url-for-build.turso.io",
+  authToken: process.env.TURSO_AUTH_TOKEN || "dummy-token-for-build",
 });
 
 export async function initDb() {
-    await db.executeMultiple(`
+  await db.executeMultiple(`
     CREATE TABLE IF NOT EXISTS media (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
