@@ -3,6 +3,8 @@ import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { SermonCard } from "@/components/shared/SermonCard";
 import { getDb } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 interface SermonRow {
     id: number;
     title: string;

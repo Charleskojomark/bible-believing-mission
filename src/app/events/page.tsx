@@ -3,6 +3,8 @@ import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { EventCard } from "@/components/shared/EventCard";
 import { getDb } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 interface EventRow {
     id: number;
     title: string;

@@ -8,6 +8,8 @@ import { LiveServiceBanner } from "@/components/home/LiveServiceBanner";
 import { CallToAction } from "@/components/home/CallToAction";
 import { getDb } from "@/lib/db";
 
+export const dynamic = "force-dynamic"; // Always fetch fresh data from DB
+
 export default async function Home() {
   let topEvents: { flyer_url: string; title: string }[] = [];
 

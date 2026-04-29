@@ -14,6 +14,11 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'images.pexels.com',
             },
+            {
+                // Cloudflare R2 public bucket
+                protocol: 'https',
+                hostname: 'pub-359969af064541a49f8428323cf549e3.r2.dev',
+            },
         ],
     },
 };
