@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
     const form = await req.formData();
     const title = form.get("title") as string;
     const date = form.get("date") as string;
+    const time = (form.get("time") as string) || "";
     const location = form.get("location") as string;
     const description = form.get("description") as string;
     const flyer = form.get("flyer") as File | null;
@@ -32,8 +33,8 @@ export async function POST(req: NextRequest) {
     }
 
     await db.execute({
-        sql: `INSERT INTO events (title, date, location, flyer_url, flyer_key, description) VALUES (?,?,?,?,?,?)`,
-        args: [title, date, location, flyer_url, flyer_key, description],
+        sql: `INSERT INTO events (title, date, time, location, flyer_url, flyer_key, description) VALUES (?,?,?,?,?,?,?)`,
+        args: [title, date, time, location, flyer_url, flyer_key, description],
     });
 
     return NextResponse.json({ ok: true });

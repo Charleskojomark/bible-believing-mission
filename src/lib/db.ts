@@ -34,6 +34,7 @@ export async function initDb() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
       date TEXT NOT NULL,
+      time TEXT,
       location TEXT,
       flyer_url TEXT,
       flyer_key TEXT,
@@ -41,6 +42,13 @@ export async function initDb() {
       created_at TEXT DEFAULT (datetime('now'))
     );
   `);
+
+  // Migration: add time column if it doesn't exist on existing DBs
+  try {
+    await db.execute(`ALTER TABLE events ADD COLUMN time TEXT DEFAULT ''`);
+  } catch {
+    // Column already exists — safe to ignore
+  }
 }
 
 /**

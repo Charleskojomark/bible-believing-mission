@@ -8,6 +8,7 @@ interface EventRow {
     id: number;
     title: string;
     date: string;
+    time: string | null;
     location: string | null;
     flyer_url: string | null;
 }
@@ -50,7 +51,7 @@ export const UpcomingEvents = async () => {
                             key={index}
                             title={event.title}
                             date={event.date}
-                            time=""
+                            time={event.time || ""}
                             location={event.location || ""}
                             imageUrl={event.flyer_url || "/placeholder.png"}
                             href={`/events`}

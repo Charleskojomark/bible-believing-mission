@@ -11,7 +11,7 @@ import {
 type Tab = "upload" | "media" | "sermons" | "events";
 type MediaItem = { id: number; title: string; type: string; url: string; size: number; created_at: string };
 type Sermon = { id: number; title: string; preacher: string; date: string; audio_url: string; thumbnail_url: string };
-type Event = { id: number; title: string; date: string; location: string; flyer_url: string };
+type Event = { id: number; title: string; date: string; time: string; location: string; flyer_url: string };
 
 const TYPE_ICONS: Record<string, React.ReactNode> = {
     image: <FiImage />, audio: <FiMusic />, video: <FiVideo />, document: <FiFileText />
@@ -269,7 +269,7 @@ function EventsTab() {
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [saving, setSaving] = useState(false);
-    const [form, setForm] = useState({ title: "", date: "", location: "", description: "" });
+    const [form, setForm] = useState({ title: "", date: "", time: "", location: "", description: "" });
     const [flyer, setFlyer] = useState<File | null>(null);
 
     const load = async () => { setLoading(true); const r = await fetch("/api/admin/events"); setEvents(await r.json()); setLoading(false); };
@@ -282,7 +282,7 @@ function EventsTab() {
         if (flyer) fd.append("flyer", flyer);
         const res = await fetch("/api/admin/events", { method: "POST", body: fd });
         setSaving(false);
-        if (res.ok) { setShowForm(false); setForm({ title: "", date: "", location: "", description: "" }); setFlyer(null); load(); }
+        if (res.ok) { setShowForm(false); setForm({ title: "", date: "", time: "", location: "", description: "" }); setFlyer(null); load(); }
     };
 
     const del = async (id: number) => {
@@ -312,9 +312,13 @@ function EventsTab() {
                             <input type="date" required className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
                         </div>
                         <div>
-                            <label className="block text-xs font-bold text-gray-600 mb-1">Location</label>
-                            <input className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} />
+                            <label className="block text-xs font-bold text-gray-600 mb-1">Time (e.g. 9:00 AM)</label>
+                            <input type="text" placeholder="9:00 AM" className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm" value={form.time} onChange={(e) => setForm({ ...form, time: e.target.value })} />
                         </div>
+                    </div>
+                    <div>
+                        <label className="block text-xs font-bold text-gray-600 mb-1">Location</label>
+                        <input className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} />
                     </div>
                     <div>
                         <label className="block text-xs font-bold text-gray-600 mb-1">Flyer Image</label>
