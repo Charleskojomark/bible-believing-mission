@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import {
     FiUploadCloud, FiImage, FiMusic, FiVideo, FiFileText,
-    FiTrash2, FiLogOut, FiCalendar, FiBook, FiGrid, FiPlus, FiX, FiMenu
+    FiTrash2, FiEdit2, FiLogOut, FiCalendar, FiBook, FiGrid, FiPlus, FiX, FiMenu
 } from "react-icons/fi";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -167,12 +167,13 @@ function MediaTab() {
 // ─── Sermons Tab ─────────────────────────────────────────────────────────────
 function SermonsTab() {
     const [sermons, setSermons] = useState<Sermon[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [showForm, setShowForm] = useState(false);
-    const [saving, setSaving] = useState(false);
     const [form, setForm] = useState({ title: "", preacher: "", date: "", description: "" });
     const [audio, setAudio] = useState<File | null>(null);
     const [thumb, setThumb] = useState<File | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [showForm, setShowForm] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [editingId, setEditingId] = useState<number | null>(null);
 
     const load = async () => { setLoading(true); const r = await fetch("/api/admin/sermons"); setSermons(await r.json()); setLoading(false); };
     useEffect(() => { load(); }, []);
@@ -180,12 +181,28 @@ function SermonsTab() {
     const save = async (e: React.FormEvent) => {
         e.preventDefault(); setSaving(true);
         const fd = new FormData();
+        if (editingId) fd.append("id", editingId.toString());
         Object.entries(form).forEach(([k, v]) => fd.append(k, v));
         if (audio) fd.append("audio", audio);
         if (thumb) fd.append("thumbnail", thumb);
-        const res = await fetch("/api/admin/sermons", { method: "POST", body: fd });
+        const res = await fetch("/api/admin/sermons", { method: editingId ? "PUT" : "POST", body: fd });
         setSaving(false);
-        if (res.ok) { setShowForm(false); setForm({ title: "", preacher: "", date: "", description: "" }); setAudio(null); setThumb(null); load(); }
+        if (res.ok) {
+            setShowForm(false);
+            setEditingId(null);
+            setForm({ title: "", preacher: "", date: "", description: "" });
+            setAudio(null); setThumb(null);
+            load();
+        }
+    };
+
+    const edit = (s: Sermon) => {
+        setForm({ title: s.title, preacher: s.preacher, date: s.date, description: (s as any).description || "" });
+        setEditingId(s.id);
+        setShowForm(true);
+        setAudio(null);
+        setThumb(null);
+        window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     const del = async (id: number) => {
@@ -232,8 +249,10 @@ function SermonsTab() {
                         <textarea rows={2} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm resize-none" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
                     </div>
                     <div className="flex gap-3">
-                        <button type="submit" disabled={saving} className="flex-1 bg-purple-600 text-white font-bold py-2 rounded-xl text-sm hover:bg-purple-700 transition disabled:opacity-50">{saving ? "Saving…" : "Save"}</button>
-                        <button type="button" onClick={() => setShowForm(false)} className="px-4 text-gray-500 text-sm font-semibold">Cancel</button>
+                        <button type="submit" disabled={saving} className="flex-1 bg-purple-600 text-white font-bold py-2 rounded-xl text-sm hover:bg-purple-700 transition disabled:opacity-50">
+                            {saving ? "Saving…" : editingId ? "Update Sermon" : "Save Sermon"}
+                        </button>
+                        <button type="button" onClick={() => { setShowForm(false); setEditingId(null); setForm({ title: "", preacher: "", date: "", description: "" }); }} className="px-4 text-gray-500 text-sm font-semibold">Cancel</button>
                     </div>
                 </form>
             )}
@@ -254,7 +273,10 @@ function SermonsTab() {
                                 <p className="text-gray-500 text-xs">{s.preacher} · {s.date}</p>
                                 {s.audio_url && <audio controls src={s.audio_url} className="mt-1 w-full h-7" />}
                             </div>
-                            <button onClick={() => del(s.id)} className="text-red-400 hover:text-red-600 flex-shrink-0 p-1"><FiTrash2 size={16} /></button>
+                            <div className="flex flex-col gap-1 flex-shrink-0">
+                                <button onClick={() => edit(s)} className="text-blue-400 hover:text-blue-600 p-1"><FiEdit2 size={16} /></button>
+                                <button onClick={() => del(s.id)} className="text-red-400 hover:text-red-600 p-1"><FiTrash2 size={16} /></button>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -266,11 +288,12 @@ function SermonsTab() {
 // ─── Events Tab ───────────────────────────────────────────────────────────────
 function EventsTab() {
     const [events, setEvents] = useState<Event[]>([]);
+    const [form, setForm] = useState({ title: "", date: "", time: "", location: "", description: "" });
+    const [flyer, setFlyer] = useState<File | null>(null);
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [saving, setSaving] = useState(false);
-    const [form, setForm] = useState({ title: "", date: "", time: "", location: "", description: "" });
-    const [flyer, setFlyer] = useState<File | null>(null);
+    const [editingId, setEditingId] = useState<number | null>(null);
 
     const load = async () => { setLoading(true); const r = await fetch("/api/admin/events"); setEvents(await r.json()); setLoading(false); };
     useEffect(() => { load(); }, []);
@@ -278,11 +301,26 @@ function EventsTab() {
     const save = async (e: React.FormEvent) => {
         e.preventDefault(); setSaving(true);
         const fd = new FormData();
+        if (editingId) fd.append("id", editingId.toString());
         Object.entries(form).forEach(([k, v]) => fd.append(k, v));
         if (flyer) fd.append("flyer", flyer);
-        const res = await fetch("/api/admin/events", { method: "POST", body: fd });
+        const res = await fetch("/api/admin/events", { method: editingId ? "PUT" : "POST", body: fd });
         setSaving(false);
-        if (res.ok) { setShowForm(false); setForm({ title: "", date: "", time: "", location: "", description: "" }); setFlyer(null); load(); }
+        if (res.ok) {
+            setShowForm(false);
+            setEditingId(null);
+            setForm({ title: "", date: "", time: "", location: "", description: "" });
+            setFlyer(null);
+            load();
+        }
+    };
+
+    const edit = (ev: Event) => {
+        setForm({ title: ev.title, date: ev.date, time: ev.time || "", location: ev.location || "", description: (ev as any).description || "" });
+        setEditingId(ev.id);
+        setShowForm(true);
+        setFlyer(null);
+        window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     const del = async (id: number) => {
@@ -329,8 +367,10 @@ function EventsTab() {
                         <textarea rows={2} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm resize-none" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
                     </div>
                     <div className="flex gap-3">
-                        <button type="submit" disabled={saving} className="flex-1 bg-purple-600 text-white font-bold py-2 rounded-xl text-sm hover:bg-purple-700 transition disabled:opacity-50">{saving ? "Saving…" : "Save"}</button>
-                        <button type="button" onClick={() => setShowForm(false)} className="px-4 text-gray-500 text-sm font-semibold">Cancel</button>
+                        <button type="submit" disabled={saving} className="flex-1 bg-purple-600 text-white font-bold py-2 rounded-xl text-sm hover:bg-purple-700 transition disabled:opacity-50">
+                            {saving ? "Saving…" : editingId ? "Update Event" : "Save Event"}
+                        </button>
+                        <button type="button" onClick={() => { setShowForm(false); setEditingId(null); setForm({ title: "", date: "", time: "", location: "", description: "" }); }} className="px-4 text-gray-500 text-sm font-semibold">Cancel</button>
                     </div>
                 </form>
             )}
@@ -350,9 +390,14 @@ function EventsTab() {
                                 <p className="font-bold text-gray-900 text-xs truncate">{ev.title}</p>
                                 <p className="text-gray-500 text-[10px]">{ev.date}</p>
                             </div>
-                            <button onClick={() => del(ev.id)}
-                                className="absolute top-1.5 right-1.5 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 active:opacity-100 transition text-xs"
-                            ><FiTrash2 size={11} /></button>
+                            <div className="absolute top-1.5 right-1.5 flex gap-1 opacity-0 group-hover:opacity-100 active:opacity-100 transition">
+                                <button onClick={() => edit(ev)} className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs shadow-sm hover:bg-blue-600">
+                                    <FiEdit2 size={11} />
+                                </button>
+                                <button onClick={() => del(ev.id)} className="w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs shadow-sm hover:bg-red-600">
+                                    <FiTrash2 size={11} />
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>
