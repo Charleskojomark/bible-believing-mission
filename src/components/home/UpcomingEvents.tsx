@@ -2,58 +2,25 @@ import React from "react";
 import { SectionWrapper } from "../ui/SectionWrapper";
 import { EventCard } from "../shared/EventCard";
 import { Button } from "../ui/Button";
-import { client } from "@/sanity/lib/client";
-import { getUpcomingEventsQuery } from "@/sanity/lib/queries";
+import { getDb } from "@/lib/db";
 
-interface EventItem {
+interface EventRow {
+    id: number;
     title: string;
-    date?: string;
-    time?: string;
-    location?: string;
-    imageUrl?: string;
-    href?: string;
+    date: string;
+    location: string | null;
+    flyer_url: string | null;
 }
 
-const FALLBACK_EVENTS: EventItem[] = [
-    {
-        title: "Anointing Service",
-        date: "OCT 22",
-        time: "9:00 AM - 12:00 PM",
-        location: "Main Auditorium, Bible Believing Mission",
-        imageUrl: "/placeholder.png",
-        href: "/events",
-    },
-    {
-        title: "Word & Prayer Conference",
-        date: "NOV 05",
-        time: "5:00 PM Daily",
-        location: "Main Auditorium, Bible Believing Mission",
-        imageUrl: "/placeholder.png",
-        href: "/events",
-    },
-    {
-        title: "Youth Encounter Night",
-        date: "NOV 18",
-        time: "6:00 PM - 9:00 PM",
-        location: "Youth Hall, Bible Believing Mission",
-        imageUrl: "/placeholder.png",
-        href: "/events",
-    },
-];
-
 export const UpcomingEvents = async () => {
-    let upcomingEvents: EventItem[] = [];
+    let upcomingEvents: EventRow[] = [];
 
     try {
-        if (client) {
-            const data = await client.fetch(getUpcomingEventsQuery);
-            if (data && data.length > 0) upcomingEvents = data;
-            else upcomingEvents = FALLBACK_EVENTS;
-        } else {
-            upcomingEvents = FALLBACK_EVENTS;
-        }
-    } catch {
-        upcomingEvents = FALLBACK_EVENTS;
+        const db = await getDb();
+        const { rows } = await db.execute(`SELECT * FROM events ORDER BY created_at DESC LIMIT 3`);
+        upcomingEvents = rows as unknown as EventRow[];
+    } catch (e) {
+        console.error("Error fetching events:", e);
     }
 
     return (
@@ -78,17 +45,20 @@ export const UpcomingEvents = async () => {
                 </div>
 
                 <div className="lg:col-span-8 flex flex-col gap-6">
-                    {upcomingEvents.map((event: EventItem, index: number) => (
+                    {upcomingEvents.map((event, index) => (
                         <EventCard
                             key={index}
                             title={event.title}
                             date={event.date}
-                            time={event.time}
-                            location={event.location}
-                            imageUrl={event.imageUrl || "/placeholder.png"}
-                            href={event.href || "/events"}
+                            time=""
+                            location={event.location || ""}
+                            imageUrl={event.flyer_url || "/placeholder.png"}
+                            href={`/events`}
                         />
                     ))}
+                    {upcomingEvents.length === 0 && (
+                        <p className="text-gray-500 py-10">No upcoming events are scheduled at the moment.</p>
+                    )}
                 </div>
             </div>
         </SectionWrapper>

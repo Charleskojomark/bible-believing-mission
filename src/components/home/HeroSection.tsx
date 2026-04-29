@@ -12,15 +12,28 @@ type Slide = {
     thumbLabel?: string;
 };
 
-const slides: Slide[] = [
+type Props = {
+    dynamicEvents?: { flyer_url: string; title?: string }[];
+};
+
+const DEFAULT_FLYERS: Slide[] = [
     { type: "image", src: "/flyers/flyer1.jpg", label: "flyer1", thumbLabel: "Program 1" },
     { type: "image", src: "/flyers/flyer4.jpg", label: "flyer4", thumbLabel: "Program 2" },
     { type: "image", src: "/flyers/flyer3.jpg", label: "flyer3", thumbLabel: "Program 3" },
-    { type: "welcome", src: "/worship1.jpg", label: "welcome", thumbLabel: "Welcome Home" },
 ];
 
-export const HeroSection = () => {
-    const [current, setCurrent] = useState(3);
+export const HeroSection = ({ dynamicEvents = [] }: Props) => {
+    // 1. Build slides array
+    const imageSlides = dynamicEvents.length > 0
+        ? dynamicEvents.map((e, i) => ({ type: "image" as const, src: e.flyer_url, label: `flyer${i}`, thumbLabel: e.title || `Program ${i + 1}` }))
+        : DEFAULT_FLYERS;
+
+    const slides: Slide[] = [
+        ...imageSlides.slice(0, 3), // max 3 flyers
+        { type: "welcome", src: "/worship1.jpg", label: "welcome", thumbLabel: "Welcome Home" }
+    ];
+
+    const [current, setCurrent] = useState(slides.length - 1); // Start on welcome slide
     const [direction, setDirection] = useState(1);
 
     const goTo = useCallback((index: number) => {

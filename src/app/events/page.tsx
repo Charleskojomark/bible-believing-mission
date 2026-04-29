@@ -1,34 +1,26 @@
 import React from "react";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { EventCard } from "@/components/shared/EventCard";
+import { getDb } from "@/lib/db";
 
-export default function EventsPage() {
-    const events = [
-        {
-            title: "Anointing Service",
-            date: "OCT 22",
-            time: "9:00 AM - 12:00 PM",
-            location: "Main Auditorium, Bible Believing Mission",
-            imageUrl: "https://images.pexels.com/photos/2351719/pexels-photo-2351719.jpeg?auto=compress&cs=tinysrgb&w=800",
-            href: "/events/anointing-service",
-        },
-        {
-            title: "Word & Prayer Conference",
-            date: "NOV 05",
-            time: "5:00 PM Daily",
-            location: "Main Auditorium, Bible Believing Mission",
-            imageUrl: "https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg?auto=compress&cs=tinysrgb&w=800",
-            href: "/events/word-prayer-conference",
-        },
-        {
-            title: "Youth Encounter Night",
-            date: "NOV 18",
-            time: "6:00 PM - 9:00 PM",
-            location: "Youth Hall, Bible Believing Mission",
-            imageUrl: "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800",
-            href: "/events/youth-encounter",
-        },
-    ];
+interface EventRow {
+    id: number;
+    title: string;
+    date: string;
+    location: string | null;
+    flyer_url: string | null;
+}
+
+export default async function EventsPage() {
+    let events: EventRow[] = [];
+
+    try {
+        const db = await getDb();
+        const { rows } = await db.execute(`SELECT * FROM events ORDER BY created_at DESC`);
+        events = rows as unknown as EventRow[];
+    } catch (e) {
+        console.error("Error fetching events:", e);
+    }
 
     return (
         <main className="pt-24 min-h-screen bg-gray-50">
@@ -45,8 +37,19 @@ export default function EventsPage() {
             <SectionWrapper>
                 <div className="max-w-4xl mx-auto flex flex-col gap-6">
                     {events.map((event, index) => (
-                        <EventCard key={index} {...event} />
+                        <EventCard
+                            key={index}
+                            title={event.title}
+                            date={event.date}
+                            time=""
+                            location={event.location || ""}
+                            imageUrl={event.flyer_url || "/placeholder.png"}
+                            href="#"
+                        />
                     ))}
+                    {events.length === 0 && (
+                        <p className="text-gray-500 py-10">No upcoming events are scheduled at the moment.</p>
+                    )}
                 </div>
             </SectionWrapper>
         </main>

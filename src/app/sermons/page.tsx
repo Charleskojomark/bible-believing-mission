@@ -1,58 +1,27 @@
 import React from "react";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { SermonCard } from "@/components/shared/SermonCard";
+import { getDb } from "@/lib/db";
 
-export default function SermonsPage() {
-    const sermons = [
-        {
-            title: "The Power of Faith in Troubled Times",
-            speaker: "Apostle Kingsley Innocent",
-            date: "Oct 15, 2023",
-            imageUrl: "https://images.pexels.com/photos/2351719/pexels-photo-2351719.jpeg?auto=compress&cs=tinysrgb&w=800",
-            href: "/sermons/power-of-faith",
-            type: "video" as const,
-        },
-        {
-            title: "Walking in Divine Promises",
-            speaker: "Apostle Kingsley Innocent",
-            date: "Oct 8, 2023",
-            imageUrl: "https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg?auto=compress&cs=tinysrgb&w=800",
-            href: "/sermons/divine-promises",
-            type: "video" as const,
-        },
-        {
-            title: "Discovering Your Purpose",
-            speaker: "Apostle Kingsley Innocent",
-            date: "Oct 1, 2023",
-            imageUrl: "https://images.pexels.com/photos/3675522/pexels-photo-3675522.jpeg?auto=compress&cs=tinysrgb&w=800",
-            href: "/sermons/discovering-purpose",
-            type: "audio" as const,
-        },
-        {
-            title: "The Holy Spirit Our Helper",
-            speaker: "Apostle Kingsley Innocent",
-            date: "Sep 24, 2023",
-            imageUrl: "https://images.pexels.com/photos/4427821/pexels-photo-4427821.jpeg?auto=compress&cs=tinysrgb&w=800",
-            href: "/sermons/holy-spirit-helper",
-            type: "video" as const,
-        },
-        {
-            title: "Breaking Generational Curses",
-            speaker: "Apostle Kingsley Innocent",
-            date: "Sep 17, 2023",
-            imageUrl: "https://images.pexels.com/photos/1309240/pexels-photo-1309240.jpeg?auto=compress&cs=tinysrgb&w=800",
-            href: "/sermons/breaking-curses",
-            type: "video" as const,
-        },
-        {
-            title: "Financial Dominion",
-            speaker: "Apostle Kingsley Innocent",
-            date: "Sep 10, 2023",
-            imageUrl: "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800",
-            href: "/sermons/financial-dominion",
-            type: "audio" as const,
-        }
-    ];
+interface SermonRow {
+    id: number;
+    title: string;
+    preacher: string;
+    date: string;
+    audio_url: string | null;
+    thumbnail_url: string | null;
+}
+
+export default async function SermonsPage() {
+    let sermons: SermonRow[] = [];
+
+    try {
+        const db = await getDb();
+        const { rows } = await db.execute(`SELECT * FROM sermons ORDER BY created_at DESC`);
+        sermons = rows as unknown as SermonRow[];
+    } catch (e) {
+        console.error("Error fetching sermons:", e);
+    }
 
     return (
         <main className="pt-24 min-h-screen bg-gray-50">
@@ -74,8 +43,19 @@ export default function SermonsPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {sermons.map((sermon, index) => (
-                        <SermonCard key={index} {...sermon} />
+                        <SermonCard
+                            key={index}
+                            title={sermon.title}
+                            speaker={sermon.preacher}
+                            date={sermon.date}
+                            imageUrl={sermon.thumbnail_url || "/placeholder.png"}
+                            href={sermon.audio_url || "#"}
+                            type="audio"
+                        />
                     ))}
+                    {sermons.length === 0 && (
+                        <p className="text-gray-500 py-10 col-span-3">No sermons have been uploaded yet. Please check back later.</p>
+                    )}
                 </div>
             </SectionWrapper>
         </main>

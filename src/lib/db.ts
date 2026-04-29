@@ -43,4 +43,13 @@ export async function initDb() {
   `);
 }
 
+/**
+ * Helper for Server Components to safely query the database.
+ * Ensures tables are created before returning the client.
+ */
+export async function getDb() {
+  await initDb();
+  return db;
+}
+
 export default db;

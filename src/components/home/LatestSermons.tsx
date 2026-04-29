@@ -2,59 +2,26 @@ import React from "react";
 import { SectionWrapper } from "../ui/SectionWrapper";
 import { SermonCard } from "../shared/SermonCard";
 import { Button } from "../ui/Button";
-import { client } from "@/sanity/lib/client";
-import { getLatestSermonsQuery } from "@/sanity/lib/queries";
+import { getDb } from "@/lib/db";
 
-interface SermonItem {
+interface SermonRow {
+    id: number;
     title: string;
-    speaker?: string;
-    date?: string;
-    type?: 'video' | 'audio';
-    videoUrl?: string;
-    imageUrl?: string;
-    href?: string;
+    preacher: string;
+    date: string;
+    audio_url: string | null;
+    thumbnail_url: string | null;
 }
 
-const FALLBACK_SERMONS: SermonItem[] = [
-    {
-        title: "The Power of Faith in Troubled Times",
-        speaker: "Apostle Kingsley Innocent",
-        date: "Oct 15, 2023",
-        imageUrl: "/placeholder.png",
-        href: "/sermons",
-        type: "video" as const,
-    },
-    {
-        title: "Walking in Divine Promises",
-        speaker: "Apostle Kingsley Innocent",
-        date: "Oct 8, 2023",
-        imageUrl: "/placeholder.png",
-        href: "/sermons",
-        type: "video" as const,
-    },
-    {
-        title: "Discovering Your Purpose",
-        speaker: "Apostle Kingsley Innocent",
-        date: "Oct 1, 2023",
-        imageUrl: "/placeholder.png",
-        href: "/sermons",
-        type: "audio" as const,
-    },
-];
-
 export const LatestSermons = async () => {
-    let latestSermons: SermonItem[] = [];
+    let latestSermons: SermonRow[] = [];
 
     try {
-        if (client) {
-            const data = await client.fetch(getLatestSermonsQuery);
-            if (data && data.length > 0) latestSermons = data;
-            else latestSermons = FALLBACK_SERMONS;
-        } else {
-            latestSermons = FALLBACK_SERMONS;
-        }
-    } catch {
-        latestSermons = FALLBACK_SERMONS;
+        const db = await getDb();
+        const { rows } = await db.execute(`SELECT * FROM sermons ORDER BY created_at DESC LIMIT 3`);
+        latestSermons = rows as unknown as SermonRow[];
+    } catch (e) {
+        console.error("Error fetching sermons:", e);
     }
 
     return (
@@ -77,18 +44,21 @@ export const LatestSermons = async () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {latestSermons.map((sermon: SermonItem, index: number) => (
+                {latestSermons.map((sermon, index) => (
                     <SermonCard
                         key={index}
                         title={sermon.title}
-                        speaker={sermon.speaker}
+                        speaker={sermon.preacher}
                         date={sermon.date}
-                        imageUrl={sermon.imageUrl}
-                        href={sermon.videoUrl || sermon.href || "/sermons"}
-                        type={sermon.type}
+                        imageUrl={sermon.thumbnail_url || "/placeholder.png"}
+                        href={sermon.audio_url || "/sermons"}
+                        type="audio"
                     />
                 ))}
             </div>
+            {latestSermons.length === 0 && (
+                <p className="text-gray-500 text-center py-10">No recent sermons found. Check back later!</p>
+            )}
         </SectionWrapper>
     );
 };
